@@ -1,8 +1,13 @@
 from http.cookies import SimpleCookie
+import urllib
+from urllib.parse import urlparse
+
 
 
 def parse(query: str) -> dict:
-    return {}
+    parser = urlparse(query)
+
+    return dict(urllib.parse.parse_qsl(parser.query))
 
 
 if __name__ == '__main__':
@@ -11,6 +16,18 @@ if __name__ == '__main__':
     assert parse('http://example.com/') == {}
     assert parse('http://example.com/?') == {}
     assert parse('http://example.com/?name=Dima') == {'name': 'Dima'}
+    assert parse('https://py.checkio.org/en/mission/just-fizz/') == {}
+    assert parse('https://www.codewars.com/kata/57a0885cbb9944e24c00008e/solutions/python') == {}
+    assert parse('https://translate.google.de/?hl=ru&tab=rT&sl=en&tl=ru&op=translate') == {'hl': 'ru', 'tab': 'rT',
+                                                                                           'sl': 'en', 'tl': 'ru',
+                                                                                           'op': 'translate'}
+    assert parse('https://lms.ithillel.ua/groups/634317c22fa78f4b3a6fd66c/homeworks/63ab49bedd0ec14f08fb1d8f') == {}
+    assert parse('https://ru.wikipedia.org/wiki/Python') == {}
+    assert parse('https://github.com/Pashatishinin/Hillel_Pro') == {}
+    assert parse('https://www.youtube.com/') == {}
+    assert parse('https://itvdn.com/ru/subscriptions') == {}
+    assert parse('https://www.youtube.com/watch?v=vou0HS2EXos') == {"v": "vou0HS2EXos"}
+    assert parse('https://www.youtube.com/watch?v=z5lo2_mMZ3E') == {"v": "z5lo2_mMZ3E"}
 
 
 def parse_cookie(query: str) -> dict:
